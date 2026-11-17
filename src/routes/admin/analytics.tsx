@@ -16,15 +16,24 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import {
+  Activity,
+  BarChart3,
+  CheckCircle2,
+  Clock,
+  Layers,
+  TrendingUp,
+} from "lucide-react";
 import { RequireAuth } from "@/components/RequireAuth";
 import { AppShell } from "@/components/AppShell";
+import { StatCard } from "@/components/StatCard";
 import { fetchComplaints, fetchDepartments } from "@/lib/complaints";
 import { CATEGORIES, STATUSES, categoryLabel, statusLabel } from "@/lib/infratrack";
 
 export const Route = createFileRoute("/admin/analytics")({
   head: () => ({
     meta: [
-      { title: "Analytics — InfraTrack" },
+      { title: "Municipal Analytics & Performance — InfraTrack" },
       { name: "description", content: "Charts on complaint volume, categories and resolution times." },
       { property: "og:title", content: "Analytics — InfraTrack" },
       { property: "og:description", content: "Insights into civic complaint trends across the city." },
@@ -39,15 +48,15 @@ export const Route = createFileRoute("/admin/analytics")({
   ),
 });
 
-const COLORS = [
-  "hsl(var(--chart-1, 190 70% 35%))",
-  "#0f766e",
-  "#f59e0b",
-  "#2563eb",
-  "#dc2626",
-  "#7c3aed",
-  "#059669",
-  "#64748b",
+const CIVIC_COLORS = [
+  "#5D866C", // Primary Sage green (Stripe 1)
+  "#C2A68C", // Warm Taupe / Sandstone (Stripe 2)
+  "#4E8764", // Botanical emerald
+  "#C28A4A", // Warm Ochre
+  "#537B88", // River Slate Blue
+  "#C85344", // Terracotta
+  "#78A388", // Soft Moss
+  "#8E7D6B", // Warm Umber
 ];
 
 function Analytics() {
@@ -132,69 +141,141 @@ function Analytics() {
       ? "—"
       : `${Math.round((complaints.filter((c) => c.status === "resolved").length / complaints.length) * 100)}%`;
 
-  if (isLoading) return <p className="text-sm text-muted-foreground">Loading analytics…</p>;
+  if (isLoading) {
+    return (
+      <div className="flex h-64 items-center justify-center rounded-2xl border bg-card shadow-card">
+        <p className="text-sm font-medium text-muted-foreground">Aggregating city metrics...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
+      {/* Analytics KPI Header */}
       <div className="grid gap-4 sm:grid-cols-3">
-        <div className="rounded-xl border bg-card p-5 shadow-card">
-          <p className="text-sm text-muted-foreground">Total complaints</p>
-          <p className="font-display text-3xl font-semibold">{complaints.length}</p>
-        </div>
-        <div className="rounded-xl border bg-card p-5 shadow-card">
-          <p className="text-sm text-muted-foreground">Resolution rate</p>
-          <p className="font-display text-3xl font-semibold">{resolutionRate}</p>
-        </div>
-        <div className="rounded-xl border bg-card p-5 shadow-card">
-          <p className="text-sm text-muted-foreground">Average time to resolve</p>
-          <p className="font-display text-3xl font-semibold">{avgResolutionDays}</p>
-        </div>
+        <StatCard
+          label="Total Grievances"
+          value={complaints.length}
+          icon={Activity}
+          hint="Across all 18 urban wards"
+        />
+        <StatCard
+          label="City Resolution Rate"
+          value={resolutionRate}
+          icon={CheckCircle2}
+          tone="success"
+          hint="Complaints closed and verified"
+        />
+        <StatCard
+          label="Average Turnaround"
+          value={avgResolutionDays}
+          icon={Clock}
+          tone="info"
+          hint="From report submission to resolution"
+        />
       </div>
 
+      {/* Charts Grid */}
       <div className="grid gap-6 xl:grid-cols-2">
-        <ChartCard title="Complaints by category">
-          <BarChart data={byCategory} margin={{ left: -20, bottom: 40 }}>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <XAxis dataKey="name" angle={-30} textAnchor="end" interval={0} fontSize={11} />
-            <YAxis allowDecimals={false} fontSize={11} />
-            <Tooltip />
-            <Bar dataKey="count" fill="#0f766e" radius={[4, 4, 0, 0]} />
+        <ChartCard title="Complaints by Category" subtitle="Volume breakdown across infrastructure types">
+          <BarChart data={byCategory} margin={{ left: -15, bottom: 45, top: 10 }}>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.2)" />
+            <XAxis dataKey="name" angle={-25} textAnchor="end" interval={0} fontSize={11} stroke="currentColor" />
+            <YAxis allowDecimals={false} fontSize={11} stroke="currentColor" />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "var(--card)",
+                borderColor: "var(--border)",
+                borderRadius: "0.75rem",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                fontSize: "12px",
+              }}
+            />
+            <Bar dataKey="count" fill="#0d9488" radius={[6, 6, 0, 0]} />
           </BarChart>
         </ChartCard>
 
-        <ChartCard title="Status breakdown">
+        <ChartCard title="Status Breakdown" subtitle="Current status distribution of tickets">
           <PieChart>
-            <Pie data={byStatus} dataKey="value" nameKey="name" outerRadius={110} label>
+            <Pie
+              data={byStatus}
+              dataKey="value"
+              nameKey="name"
+              outerRadius={105}
+              innerRadius={50}
+              paddingAngle={3}
+              label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+              labelLine={false}
+              fontSize={11}
+            >
               {byStatus.map((_, i) => (
-                <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                <Cell key={i} fill={CIVIC_COLORS[i % CIVIC_COLORS.length]} strokeWidth={2} stroke="var(--card)" />
               ))}
             </Pie>
-            <Tooltip />
-            <Legend />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "var(--card)",
+                borderColor: "var(--border)",
+                borderRadius: "0.75rem",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                fontSize: "12px",
+              }}
+            />
+            <Legend wrapperStyle={{ fontSize: "11px", paddingTop: "10px" }} />
           </PieChart>
         </ChartCard>
 
-        <ChartCard title="Department workload">
-          <BarChart data={byDepartment} margin={{ left: -20, bottom: 30 }}>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <XAxis dataKey="name" angle={-20} textAnchor="end" interval={0} fontSize={11} />
-            <YAxis allowDecimals={false} fontSize={11} />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="open" stackId="a" fill="#f59e0b" />
-            <Bar dataKey="resolved" stackId="a" fill="#0f766e" radius={[4, 4, 0, 0]} />
+        <ChartCard title="Department Workload" subtitle="Active backlog vs resolved work orders">
+          <BarChart data={byDepartment} margin={{ left: -15, bottom: 35, top: 10 }}>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.2)" />
+            <XAxis dataKey="name" angle={-15} textAnchor="end" interval={0} fontSize={11} stroke="currentColor" />
+            <YAxis allowDecimals={false} fontSize={11} stroke="currentColor" />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "var(--card)",
+                borderColor: "var(--border)",
+                borderRadius: "0.75rem",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                fontSize: "12px",
+              }}
+            />
+            <Legend wrapperStyle={{ fontSize: "11px", paddingTop: "10px" }} />
+            <Bar dataKey="open" name="Active Backlog" stackId="a" fill="#f59e0b" />
+            <Bar dataKey="resolved" name="Resolved" stackId="a" fill="#0d9488" radius={[6, 6, 0, 0]} />
           </BarChart>
         </ChartCard>
 
-        <ChartCard title="Reported vs resolved (last 6 months)">
-          <LineChart data={monthly} margin={{ left: -20 }}>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <XAxis dataKey="name" fontSize={11} />
-            <YAxis allowDecimals={false} fontSize={11} />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="reported" stroke="#2563eb" strokeWidth={2} />
-            <Line type="monotone" dataKey="resolved" stroke="#0f766e" strokeWidth={2} />
+        <ChartCard title="Reported vs. Resolved (Last 6 Months)" subtitle="Monthly intake pace versus field completions">
+          <LineChart data={monthly} margin={{ left: -15, top: 10 }}>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.2)" />
+            <XAxis dataKey="name" fontSize={11} stroke="currentColor" />
+            <YAxis allowDecimals={false} fontSize={11} stroke="currentColor" />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "var(--card)",
+                borderColor: "var(--border)",
+                borderRadius: "0.75rem",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                fontSize: "12px",
+              }}
+            />
+            <Legend wrapperStyle={{ fontSize: "11px", paddingTop: "10px" }} />
+            <Line
+              type="monotone"
+              dataKey="reported"
+              name="Incoming Reports"
+              stroke="#2563eb"
+              strokeWidth={2.5}
+              dot={{ r: 4 }}
+            />
+            <Line
+              type="monotone"
+              dataKey="resolved"
+              name="Verified Resolved"
+              stroke="#0d9488"
+              strokeWidth={2.5}
+              dot={{ r: 4 }}
+            />
           </LineChart>
         </ChartCard>
       </div>
@@ -202,10 +283,21 @@ function Analytics() {
   );
 }
 
-function ChartCard({ title, children }: { title: string; children: React.ReactElement }) {
+function ChartCard({
+  title,
+  subtitle,
+  children,
+}: {
+  title: string;
+  subtitle?: string;
+  children: React.ReactElement;
+}) {
   return (
-    <div className="rounded-xl border bg-card p-5 shadow-card">
-      <h3 className="mb-4 font-medium">{title}</h3>
+    <div className="rounded-2xl border border-border/80 bg-card p-6 shadow-card space-y-4">
+      <div>
+        <h3 className="font-display text-base font-bold text-foreground">{title}</h3>
+        {subtitle ? <p className="text-xs text-muted-foreground mt-0.5">{subtitle}</p> : null}
+      </div>
       <div className="h-80">
         <ResponsiveContainer width="100%" height="100%">
           {children}

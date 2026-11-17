@@ -1,5 +1,7 @@
 // Shared domain constants for InfraTrack (categories, statuses, priorities,
 // and the category -> department routing rules).
+import { getActiveLanguage } from "@/context/LanguageContext";
+import { translations, type Language } from "@/lib/translations";
 
 export type Category =
   | "road_pothole"
@@ -39,10 +41,23 @@ export const PRIORITIES: { value: Priority; label: string }[] = [
   { value: "high", label: "High" },
 ];
 
-export const categoryLabel = (c: string) =>
-  CATEGORIES.find((x) => x.value === c)?.label ?? c;
-export const statusLabel = (s: string) => STATUSES.find((x) => x.value === s)?.label ?? s;
-export const priorityLabel = (p: string) => PRIORITIES.find((x) => x.value === p)?.label ?? p;
+export const categoryLabel = (c: string, lang?: Language) => {
+  const currentLang = lang || getActiveLanguage();
+  const key = `category.${c}`;
+  return translations[currentLang]?.[key] ?? CATEGORIES.find((x) => x.value === c)?.label ?? c;
+};
+
+export const statusLabel = (s: string, lang?: Language) => {
+  const currentLang = lang || getActiveLanguage();
+  const key = `status.${s}`;
+  return translations[currentLang]?.[key] ?? STATUSES.find((x) => x.value === s)?.label ?? s;
+};
+
+export const priorityLabel = (p: string, lang?: Language) => {
+  const currentLang = lang || getActiveLanguage();
+  const key = `priority.${p}`;
+  return translations[currentLang]?.[key] ?? PRIORITIES.find((x) => x.value === p)?.label ?? p;
+};
 
 /** Department automatically suggested for a category. */
 export const DEPARTMENT_FOR_CATEGORY: Record<Category, string> = {
@@ -85,18 +100,20 @@ export function suggestPriority(category: Category, text: string): Priority {
 
 export const STATUS_FLOW: Status[] = ["pending", "assigned", "in_progress", "resolved"];
 
-export function formatDate(value?: string | null) {
+export function formatDate(value?: string | null, lang?: Language) {
   if (!value) return "—";
-  return new Date(value).toLocaleDateString("en-IN", {
+  const currentLang = lang || getActiveLanguage();
+  return new Date(value).toLocaleDateString(currentLang === "hi" ? "hi-IN" : "en-IN", {
     day: "2-digit",
     month: "short",
     year: "numeric",
   });
 }
 
-export function formatDateTime(value?: string | null) {
+export function formatDateTime(value?: string | null, lang?: Language) {
   if (!value) return "—";
-  return new Date(value).toLocaleString("en-IN", {
+  const currentLang = lang || getActiveLanguage();
+  return new Date(value).toLocaleString(currentLang === "hi" ? "hi-IN" : "en-IN", {
     day: "2-digit",
     month: "short",
     year: "numeric",

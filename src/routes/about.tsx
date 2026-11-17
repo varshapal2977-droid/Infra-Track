@@ -1,4 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import {
+  ArrowLeft,
+  CheckCircle2,
+  KeyRound,
+  Lock,
+  MapPin,
+  ShieldCheck,
+  Sparkles,
+  Users2,
+  Workflow,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -21,51 +33,128 @@ export const Route = createFileRoute("/about")({
 
 function About() {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-3xl px-4 py-14 md:py-20">
-        <Link to="/" className="text-sm text-primary hover:underline">
-          ← Back home
-        </Link>
-        <h1 className="mt-5 font-display text-3xl font-semibold">About InfraTrack</h1>
-        <p className="mt-4 text-muted-foreground">
-          InfraTrack is a civic maintenance tracking platform that connects residents with the city
-          departments responsible for public infrastructure.
-        </p>
+    <div className="min-h-screen bg-background text-foreground flex flex-col">
+      {/* Top Bar */}
+      <header className="border-b border-border/80 bg-card/90 backdrop-blur-md">
+        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6">
+          <Link to="/" className="flex items-center gap-2 group">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+              <ShieldCheck className="h-5 w-5" />
+            </div>
+            <span className="font-display text-base font-bold text-foreground">InfraTrack</span>
+          </Link>
+          <Link to="/">
+            <Button variant="ghost" size="sm" className="gap-1.5 text-xs">
+              <ArrowLeft className="h-3.5 w-3.5" /> Back to Home
+            </Button>
+          </Link>
+        </div>
+      </header>
 
-        <h2 className="mt-10 font-display text-xl font-semibold">How it works</h2>
-        <ol className="mt-3 space-y-3 text-sm text-muted-foreground">
-          <li>
-            <strong className="text-foreground">1. Report.</strong> A resident describes the issue,
-            picks a category and marks the exact spot on the map.
-          </li>
-          <li>
-            <strong className="text-foreground">2. Route.</strong> The category decides the
-            department, and the wording of the report suggests a priority — words like “hazard” or
-            “overflow” raise it.
-          </li>
-          <li>
-            <strong className="text-foreground">3. Resolve.</strong> Authorities move the complaint
-            through Assigned, In Progress and Resolved, adding remarks that the reporter sees.
-          </li>
-          <li>
-            <strong className="text-foreground">4. Review.</strong> Everyone can see the city map
-            and analytics: volumes by category, department load and resolution rates.
-          </li>
-        </ol>
+      {/* Main Content */}
+      <main className="flex-1 py-12 md:py-16">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 space-y-12">
+          {/* Header */}
+          <div className="space-y-4">
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-semibold text-primary">
+              <ShieldCheck className="h-3.5 w-3.5" /> Platform Architecture & Mission
+            </div>
+            <h1 className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl text-foreground">
+              Empowering Cities Through Transparent Infrastructure Redressal
+            </h1>
+            <p className="text-base text-muted-foreground leading-relaxed">
+              InfraTrack is an open municipal accountability bridge connecting city residents directly with engineers, maintenance crews, and public works authorities.
+            </p>
+          </div>
 
-        <h2 className="mt-10 font-display text-xl font-semibold">Roles</h2>
-        <p className="mt-3 text-sm text-muted-foreground">
-          Citizens can report issues and follow their own complaints. Authority accounts can update
-          any complaint, reassign departments and view analytics. Complaint data is protected by
-          per-user access rules, so only the reporter or an authority can change a record.
-        </p>
+          {/* Workflow Cards */}
+          <div className="space-y-4">
+            <h2 className="font-display text-xl font-bold text-foreground">
+              How the System Operates
+            </h2>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-2xs space-y-2.5">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <MapPin className="h-5 w-5" />
+                </div>
+                <h3 className="font-display text-base font-bold text-foreground">1. Citizen Geotagging</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Residents drop an exact GPS marker on the map, choose from 8 defined infrastructure categories, and upload descriptions and photo links.
+                </p>
+              </div>
 
-        <h2 className="mt-10 font-display text-xl font-semibold">Demo access</h2>
-        <p className="mt-3 text-sm text-muted-foreground">
-          Create a free account to report issues. To try the authority side, open your Profile page
-          and enter the access code <code className="rounded bg-muted px-1.5 py-0.5">INFRA-ADMIN-2026</code>.
-        </p>
-      </div>
+              <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-2xs space-y-2.5">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <Workflow className="h-5 w-5" />
+                </div>
+                <h3 className="font-display text-base font-bold text-foreground">2. Smart Department Routing</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  The category decides the department (Roads, Power, Water, Sanitation, PWD), and automated text heuristics evaluate urgency keywords for priority scoring.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-2xs space-y-2.5">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <CheckCircle2 className="h-5 w-5" />
+                </div>
+                <h3 className="font-display text-base font-bold text-foreground">3. Real-Time Status Trail</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Authorities advance tickets through Assigned, In Progress, and Resolved with time-stamped inspection notes that reporters can follow in real-time.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-2xs space-y-2.5">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <Users2 className="h-5 w-5" />
+                </div>
+                <h3 className="font-display text-base font-bold text-foreground">4. City-Wide Open Data</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Every citizen can view the public density map, category breakdown, and ward resolution statistics to hold elected officials accountable.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Role Access Security */}
+          <div className="rounded-2xl border border-border/80 bg-card p-6 shadow-2xs space-y-4">
+            <div className="flex items-center gap-2">
+              <Lock className="h-5 w-5 text-primary" />
+              <h2 className="font-display text-lg font-bold text-foreground">Security & Data Privacy</h2>
+            </div>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              InfraTrack utilizes per-user database row-level security. Only the reporting citizen and authorized municipal officers can modify complaint remarks or status. All data is encrypted in transit and at rest.
+            </p>
+          </div>
+
+          {/* Demo Access Highlight Card */}
+          <div className="rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent p-6 shadow-2xs space-y-4">
+            <div className="flex items-center gap-2">
+              <KeyRound className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+              <h2 className="font-display text-lg font-bold text-foreground">
+                Evaluator & Authority Demo Access
+              </h2>
+            </div>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              You can test both sides of the platform. After signing up for a free account, navigate to your <strong>Profile</strong> page and enter the official demo authority code:
+            </p>
+            <div className="flex items-center gap-3">
+              <code className="rounded-xl border border-amber-500/30 bg-card px-3.5 py-2 font-mono text-sm font-bold text-foreground shadow-2xs select-all">
+                INFRA-ADMIN-2026
+              </code>
+              <Link to="/profile">
+                <Button size="sm" variant="secondary" className="font-medium text-xs">
+                  Go to Profile →
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t border-border/80 bg-card py-6 text-center text-xs text-muted-foreground">
+        InfraTrack · Municipal Grievance Redressal Initiative
+      </footer>
     </div>
   );
 }
