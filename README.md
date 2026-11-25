@@ -1,9 +1,49 @@
 <<<<<<< HEAD
-# InfraTrack — Civic Infrastructure Complaint Management
+# 🚧 InfraTrack — Civic Infrastructure Complaint Management
 
 A full-stack web app for reporting and managing public infrastructure issues
 (potholes, streetlights, water leaks, garbage, drainage, etc.) with citizen and
 authority roles, GIS maps, analytics and notifications.
+
+## 🎯 Objective
+
+The main objective of InfraTrack is to provide a centralized, transparent system that connects citizens with authorities to report, manage, and track civic infrastructure problems through a unified workflow:
+
+**Report → Locate → Assign → Track → Resolve**
+
+---
+
+## 💡 Why InfraTrack?
+
+Civic infrastructure problems are common across urban areas, campuses, and local communities, but citizens often face friction when trying to:
+
+- Find the right department to contact
+- Pin the exact location of an issue
+- Track whether authorities received a complaint and what progress is being made
+- Follow up on slow or unresolved issues without clear accountability
+
+InfraTrack solves this with a single digital platform and a clear citizen–authority feedback loop.
+
+---
+
+## ✨ Key Features
+
+### 👤 Citizen Features
+
+- Register and sign in securely
+- Report civic infrastructure issues in under a minute with title, description, category, priority, and map pin location
+- Track submitted complaints, full status history, and remarks
+- Receive notifications on status updates
+- Explore public city maps and open civic analytics
+
+### 🛡️ Authority Features
+
+- Filter and view complaints across departments
+- Assign complaints and update status with remarks and timestamps
+- Monitor department workloads, resolution rates, and hotspot heat maps
+- Upgrade an account to Authority on the Profile page using access code `INFRA-ADMIN-2026`
+
+---
 
 ## Run it locally (2 commands)
 
@@ -130,44 +170,5 @@ InfraTrack is a web-based civic infrastructure management platform designed to c
 The platform allows citizens to report problems such as potholes, broken streetlights, garbage accumulation, drainage issues, water leakage, and other civic infrastructure problems. Authorities can manage these complaints, assign them to departments, update their status, and monitor overall issue resolution through an administrative dashboard.
 
 ---
-
-## 🎯 Objective
-
-The main objective of InfraTrack is to provide a centralized and transparent system for reporting and managing civic infrastructure problems.
-
-Instead of relying on disconnected complaint channels, InfraTrack provides a unified workflow:
-
-**Report → Locate → Assign → Track → Resolve**
-
----
-
-## 💡 Why InfraTrack?
-
-Civic infrastructure problems are common in urban areas, but citizens may face difficulties in:
-
-- Finding the correct department to contact
-- Reporting the exact location of an issue
-- Tracking the progress of a complaint
-- Knowing whether authorities have received the complaint
-- Following up on unresolved problems
-
-InfraTrack addresses these problems by providing a centralized digital platform for both citizens and authorities.
-
----
-
-## ✨ Key Features
-
-### 👤 Citizen Features
-
-- User registration and authentication
-- Report civic infrastructure issues
-- Add issue title and description
-- Select issue category
-- Set issue priority
-- Select the issue location using a map
-- Track submitted complaints
-- View complaint status
-- View complaint history
-- Receive notifications about status changes
 
 >>>>>>> origin/main
