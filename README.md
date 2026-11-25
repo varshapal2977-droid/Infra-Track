@@ -161,14 +161,5 @@ The frontend talks to PostgREST (Supabase) over HTTPS. Main operations:
 | Notifications       | `supabase.from('notifications').select('*').eq('user_id', id)`       |
 | Claim authority     | `supabase.rpc('claim_admin_role', { _code })`                        |
 =======
-# 🚧 InfraTrack
-
-### Smart Civic Infrastructure Reporting & Tracking Platform
-
-InfraTrack is a web-based civic infrastructure management platform designed to connect citizens with authorities for reporting, managing, and tracking public infrastructure issues.
-
-The platform allows citizens to report problems such as potholes, broken streetlights, garbage accumulation, drainage issues, water leakage, and other civic infrastructure problems. Authorities can manage these complaints, assign them to departments, update their status, and monitor overall issue resolution through an administrative dashboard.
-
----
 
 >>>>>>> origin/main
